@@ -27,10 +27,16 @@ angular.module('ethExplorer', ['ngRoute','ui.bootstrap'])
     }])
     .run(function($rootScope) {
         var web3 = new Web3();
-        var eth_node_url = window.location.search.substr(1);
+        var eth_node_url = sessionStorage.getItem('eth_node_url');
         if (! eth_node_url) {
+            var eth_node_url = window.location.search.substr(1);
+        }
+        if (! eth_node_url) {
+        var eth_node_url = window.location.search.substr(1);
             var eth_node_url = window.prompt("Ehereum RPC", 'http://127.0.0.1:8545');
         }
+        sessionStorage.setItem('eth_node_url', eth_node_url);
+
 	web3.setProvider(new web3.providers.HttpProvider(eth_node_url));
         $rootScope.web3 = web3;
         function sleepFor( sleepDuration ){
